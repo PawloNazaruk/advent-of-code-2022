@@ -10,6 +10,10 @@ class Hand(Enum):
     PAPER = 2
     SCISSORS = 3
 
+class GameResult(Enum):
+    LOSE = 0
+    TIE = 3
+    WIN = 6
 
 def get_data_from_file(file: str) -> List[str]:
     try:
@@ -19,7 +23,7 @@ def get_data_from_file(file: str) -> List[str]:
         print(f"File({file}) not found due to: {err}")
 
 
-def parse_data(data: List[str]) -> List[Tuple[Hand, Hand]]:
+def parse_hands_data(data: List[str]) -> List[Tuple[Hand, Hand]]:
     data = [x.replace(' ', '').replace('\n', '') for x in data]
     parsed_data = []
     elf_hand = {'A': Hand.ROCK, 'B': Hand.PAPER, 'C': Hand.SCISSORS}
@@ -29,7 +33,18 @@ def parse_data(data: List[str]) -> List[Tuple[Hand, Hand]]:
     return parsed_data
 
 
-def game_outcome(choice_1, choice_2):
+def parse_results_data(data: List[str]) -> List[Tuple[Hand, GameResult]]:
+    data = [x.replace(' ', '').replace('\n', '') for x in data]
+    parsed_data = []
+    elf_hand = {'A': Hand.ROCK, 'B': Hand.PAPER, 'C': Hand.SCISSORS}
+    match_result = {'X': GameResult.LOSE, 'Y': GameResult.TIE, 'Z': GameResult.WIN}
+
+    for elf_pick, result in data:
+        parsed_data.append((elf_hand.get(elf_pick), match_result.get(result)))
+    return parsed_data
+
+
+def game_outcome(choice_1: str, choice_2: str) -> str:
     if choice_1 == "ROCK":
         return {"ROCK": "tie", "PAPER": "lose", "SCISSORS": "win"}.get(choice_2)
     elif choice_1 == "PAPER":
@@ -38,13 +53,44 @@ def game_outcome(choice_1, choice_2):
         return {"ROCK": "lose", "PAPER": "win", "SCISSORS": "tie"}.get(choice_2)
 
 
+def find_hand_by_result(choice_1: str, result: str) -> str:
+    print(f"{choice_1=}")
+    print(f"{result=}")
+    if choice_1 == "ROCK":
+        outcome = {"ROCK": "TIE", "PAPER": "LOSE", "SCISSORS": "WIN"}
+        for key, value in outcome.items():
+            if value == result:
+                return key
+    elif choice_1 == "PAPER":
+        outcome = {"ROCK": "WIN", "PAPER": "TIE", "SCISSORS": "LOSE"}
+        for key, value in outcome.items():
+            if value == result:
+                return key
+    elif choice_1 == "SCISSORS":
+        matches = {"ROCK": "LOSE", "PAPER": "WIN", "SCISSORS": "TIE"}
+        for key, value in matches.items():
+            if value == result:
+                return key
+
+
 def task_solution() -> None:
-    score: int = 0
     outcome_table: dict = {"lose": 0, "tie": 3, "win": 6}
-    rounds: List[Tuple] = parse_data(get_data_from_file(INPUT_FILE))
+
+    # First Part
+    rounds: List[Tuple] = parse_hands_data(get_data_from_file(INPUT_FILE))
+    score: int = 0
     for elf, player in rounds:
         result: str = game_outcome(player.name, elf.name)
         score += player.value + outcome_table.get(result)
+    print(score)
 
-    # First Part
+    # Second Part
+    rounds: List[Tuple] = parse_results_data(get_data_from_file(INPUT_FILE))
+    score: int = 0
+    for elf, result in rounds[:2]:
+        print("aaaa")
+        print(f"{result=}")
+        print(f"{result.name=}")
+        player: str = find_hand_by_result(elf.name, result.name)
+        score += player.value + result.value
     print(score)
