@@ -45,13 +45,13 @@ def parse_results_data(data: List[str]) -> List[Tuple[Hand, GameResult]]:
     return parsed_data
 
 
-def game_outcome(choice_1: str, choice_2: str) -> str:
+def find_game_result(choice_1: str, choice_2: str) -> GameResult:
     if choice_1 == "ROCK":
-        return {"ROCK": "tie", "PAPER": "lose", "SCISSORS": "win"}.get(choice_2)
+        return {"ROCK": GameResult.WIN, "PAPER": GameResult.LOSE, "SCISSORS": GameResult.WIN}.get(choice_2)
     elif choice_1 == "PAPER":
-        return {"ROCK": "win", "PAPER": "tie", "SCISSORS": "lose"}.get(choice_2)
+        return {"ROCK": GameResult.WIN, "PAPER": GameResult.TIE, "SCISSORS": GameResult.LOSE}.get(choice_2)
     elif choice_1 == "SCISSORS":
-        return {"ROCK": "lose", "PAPER": "win", "SCISSORS": "tie"}.get(choice_2)
+        return {"ROCK": GameResult.LOSE, "PAPER": GameResult.WIN, "SCISSORS": GameResult.LOSE}.get(choice_2)
 
 
 def find_hand_from_result(choice_1: str, result: str) -> Hand:
@@ -67,14 +67,12 @@ def find_hand_from_result(choice_1: str, result: str) -> Hand:
 
 
 def task_solution() -> None:
-    outcome_table: dict = {"lose": 0, "tie": 3, "win": 6}
-
     # First Part
     rounds: List[Tuple] = parse_hands_data(get_data_from_file(INPUT_FILE))
     score: int = 0
     for elf, player in rounds:
-        result: str = game_outcome(player.name, elf.name)
-        score += player.value + outcome_table.get(result)
+        result: GameResult = find_game_result(player.name, elf.name)
+        score += player.value + result.value
     print(score)
 
     # Second Part
