@@ -10,10 +10,12 @@ class Hand(Enum):
     PAPER = 2
     SCISSORS = 3
 
+
 class GameResult(Enum):
     LOSE = 0
     TIE = 3
     WIN = 6
+
 
 def get_data_from_file(file: str) -> List[str]:
     try:
@@ -38,7 +40,6 @@ def parse_results_data(data: List[str]) -> List[Tuple[Hand, GameResult]]:
     parsed_data = []
     elf_hand = {'A': Hand.ROCK, 'B': Hand.PAPER, 'C': Hand.SCISSORS}
     match_result = {'X': GameResult.LOSE, 'Y': GameResult.TIE, 'Z': GameResult.WIN}
-
     for elf_pick, result in data:
         parsed_data.append((elf_hand.get(elf_pick), match_result.get(result)))
     return parsed_data
@@ -53,24 +54,16 @@ def game_outcome(choice_1: str, choice_2: str) -> str:
         return {"ROCK": "lose", "PAPER": "win", "SCISSORS": "tie"}.get(choice_2)
 
 
-def find_hand_by_result(choice_1: str, result: str) -> str:
-    print(f"{choice_1=}")
-    print(f"{result=}")
+def find_hand_from_result(choice_1: str, result: str) -> Hand:
     if choice_1 == "ROCK":
-        outcome = {"ROCK": "TIE", "PAPER": "LOSE", "SCISSORS": "WIN"}
-        for key, value in outcome.items():
-            if value == result:
-                return key
+        outcome = {"TIE": Hand.ROCK, "WIN": Hand.PAPER, "LOSE": Hand.SCISSORS}
+        return outcome.get(result)
     elif choice_1 == "PAPER":
-        outcome = {"ROCK": "WIN", "PAPER": "TIE", "SCISSORS": "LOSE"}
-        for key, value in outcome.items():
-            if value == result:
-                return key
+        outcome = {"TIE": Hand.PAPER, "WIN": Hand.SCISSORS, "LOSE": Hand.ROCK}
+        return outcome.get(result)
     elif choice_1 == "SCISSORS":
-        matches = {"ROCK": "LOSE", "PAPER": "WIN", "SCISSORS": "TIE"}
-        for key, value in matches.items():
-            if value == result:
-                return key
+        outcome = {"TIE": Hand.SCISSORS, "WIN": Hand.ROCK, "LOSE": Hand.PAPER}
+        return outcome.get(result)
 
 
 def task_solution() -> None:
@@ -87,10 +80,7 @@ def task_solution() -> None:
     # Second Part
     rounds: List[Tuple] = parse_results_data(get_data_from_file(INPUT_FILE))
     score: int = 0
-    for elf, result in rounds[:2]:
-        print("aaaa")
-        print(f"{result=}")
-        print(f"{result.name=}")
-        player: str = find_hand_by_result(elf.name, result.name)
+    for elf, result in rounds:
+        player: Hand = find_hand_from_result(elf.name, result.name)
         score += player.value + result.value
     print(score)
