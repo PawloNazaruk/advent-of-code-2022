@@ -29,7 +29,7 @@ def get_priority(letter: str) -> int:
     return table.get(letter)
 
 
-def task_solution():
+def task_solution() -> None:
     rows: List[str] = clean_data(get_data_from_file(INPUT_FILE))
 
     # First part
