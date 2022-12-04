@@ -31,6 +31,8 @@ def get_priority(letter: str) -> int:
 
 def task_solution():
     rows: List[str] = clean_data(get_data_from_file(INPUT_FILE))
+
+    # First part
     total: int = 0
     for text in rows:
         half_first, half_second = split_to_halves(text)
@@ -38,9 +40,15 @@ def task_solution():
         half_second = set(half_second)
         for common_letter in half_first & half_second:
             total += get_priority(common_letter)
-
-    # First task
     print(total)
 
-
-task_solution()
+    # Second part
+    total: int = 0
+    group: List[set] = []
+    for i, text in enumerate(rows, start=1):
+        group.append(set(text))
+        if i % 3 == 0:
+            for common_letter in group[0] & group[1] & group[2]:
+                total += get_priority(common_letter)
+            group = []
+    print(total)
