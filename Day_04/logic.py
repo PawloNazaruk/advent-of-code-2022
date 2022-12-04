@@ -37,5 +37,15 @@ def task_solution() -> None:
         total += is_subset
     print(total)
 
+    # Second part
+    total: int = 0
+    for text in rows:
+        part_1, part_2 = text.split(",")
+        elf_1: set = parse_into_set(part_1)
+        elf_2: set = parse_into_set(part_2)
+        if elf_1 & elf_2:
+            total += 1
+    print(total)
+
 
 task_solution()
