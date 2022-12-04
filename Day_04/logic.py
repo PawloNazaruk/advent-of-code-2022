@@ -26,15 +26,11 @@ def task_solution() -> None:
     # First part
     total: int = 0
     for text in rows:
-        is_subset: int = 0
         part_1, part_2 = text.split(",")
         elf_1: set = parse_into_set(part_1)
         elf_2: set = parse_into_set(part_2)
-        if elf_1.issubset(elf_2):
-            is_subset = 1
-        if elf_2 .issubset(elf_1):
-            is_subset = 1
-        total += is_subset
+        if elf_1.issubset(elf_2) or elf_2 .issubset(elf_1):
+            total += 1
     print(total)
 
     # Second part
