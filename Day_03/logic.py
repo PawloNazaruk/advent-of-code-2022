@@ -22,7 +22,7 @@ def split_to_halves(text: str) -> Tuple:
 
 
 def get_priority(letter: str) -> int:
-    numbers = {x: 1 for x in range(1, 58)}
+    numbers = [x for x in range(1, 58)]
     small_letters = [chr(x) for x in range(97, 123)]
     big_letters = [chr(x) for x in range(65, 91)]
     table = dict(zip(small_letters + big_letters, numbers))
