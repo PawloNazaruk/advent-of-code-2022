@@ -22,17 +22,25 @@ def task_solution() -> None:
     text: str = clean_data(get_data_from_file(INPUT_FILE))[0]
 
     # First part
-    MARKER = 4
-    i = 0
-    index = 0
+    MARKER: int = 4
+    packet: str = ""
+    index: int = 0
     for i, _ in enumerate(text):
         packet = text[i:MARKER + i]
-        if len(set(packet)) == 4:
+        if len(set(packet)) == MARKER:
             index = MARKER + i
             break
     pprint(f"result: {index=}")
 
-
+    # Second part
+    MARKER: int = 14
+    index: int = 0
+    for i, _ in enumerate(text):
+        packet = text[i:MARKER + i]
+        if len(set(packet)) == MARKER:
+            index = MARKER + i
+            break
+    pprint(f"result: {index=}")
 
 
 task_solution()
