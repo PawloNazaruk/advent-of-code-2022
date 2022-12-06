@@ -1,5 +1,7 @@
 from typing import List
 import re
+from pprint import pprint
+
 
 INPUT_FILE = "input_file.txt"
 
@@ -31,7 +33,6 @@ def task_solution() -> None:
     # First part
     cargo_order: List[str] = rows[7::-1]
     cargo_movements: List[str] = rows[10:]
-
     stacks: List[List[str]] = create_stacks(cargo_order)
 
     for movement in cargo_movements:
@@ -46,21 +47,19 @@ def task_solution() -> None:
 
     # Second part
     cargo_order: List[str] = rows[7::-1]
-    cargo_movements: List[str] = rows[10:11]
-
+    cargo_movements: List[str] = rows[10:]
     stacks: List[List[str]] = create_stacks(cargo_order)
 
     for movement in cargo_movements:
         quantity, from_stack, to_stack = [int(x) for x in re.findall(r"[0-9]+", movement)]
         from_stack -= 1
         to_stack -= 1
+        moved_cargo: List[str] = stacks[from_stack][-quantity:]
+        stacks[from_stack] = stacks[from_stack][:-quantity]
+        stacks[to_stack].extend(moved_cargo)
 
-        stacks[to_stack].append(stacks[from_stack].pop())
-
-        # for i in range(0, quantity):
-        #    stacks[to_stack].append(stacks[from_stack].pop())
-
-
+    result: str = "".join([x[-1] for x in stacks])
+    print(f"{result=}")
 
 
 task_solution()
