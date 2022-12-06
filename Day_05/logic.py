@@ -44,5 +44,23 @@ def task_solution() -> None:
     result: str = "".join([x[-1] for x in stacks])
     print(f"{result=}")
 
+    # Second part
+    cargo_order: List[str] = rows[7::-1]
+    cargo_movements: List[str] = rows[10:11]
+
+    stacks: List[List[str]] = create_stacks(cargo_order)
+
+    for movement in cargo_movements:
+        quantity, from_stack, to_stack = [int(x) for x in re.findall(r"[0-9]+", movement)]
+        from_stack -= 1
+        to_stack -= 1
+
+        stacks[to_stack].append(stacks[from_stack].pop())
+
+        # for i in range(0, quantity):
+        #    stacks[to_stack].append(stacks[from_stack].pop())
+
+
+
 
 task_solution()
