@@ -1,5 +1,4 @@
 from typing import List
-import re
 from pprint import pprint
 
 
@@ -23,7 +22,6 @@ def task_solution() -> None:
 
     # First part
     MARKER: int = 4
-    packet: str = ""
     index: int = 0
     for i, _ in enumerate(text):
         packet = text[i:MARKER + i]
