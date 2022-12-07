@@ -24,7 +24,7 @@ def task_solution() -> None:
     MARKER: int = 4
     index: int = 0
     for i, _ in enumerate(text):
-        packet = text[i:MARKER + i]
+        packet: str = text[i:MARKER + i]
         if len(set(packet)) == MARKER:
             index = MARKER + i
             break
@@ -34,7 +34,7 @@ def task_solution() -> None:
     MARKER: int = 14
     index: int = 0
     for i, _ in enumerate(text):
-        packet = text[i:MARKER + i]
+        packet: str = text[i:MARKER + i]
         if len(set(packet)) == MARKER:
             index = MARKER + i
             break
